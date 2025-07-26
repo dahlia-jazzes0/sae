@@ -2,14 +2,28 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { postsCollection } from "@/entities/posts/db/posts-collection";
 import type { PostSelectWithId } from "@/entities/posts/schema";
 import { getUser } from "@/entities/users/db/get-user";
-import { limit, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  QueryConstraint,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { PostWidget } from "./post-widget";
 
-export function PostListWidget() {
+interface PostListWidgetProps {
+  constraints?: QueryConstraint[];
+}
+export function PostListWidget({ constraints }: PostListWidgetProps) {
   const [posts, setPosts] = useState<PostSelectWithId[]>();
   useEffect(() => {
-    const q = query(postsCollection, orderBy("createdAt", "desc"), limit(10));
+    const q = query(
+      postsCollection,
+      ...(constraints ?? []),
+      orderBy("createdAt", "desc"),
+      limit(10)
+    );
     return onSnapshot(q, async (snapshot) => {
       const posts = await Promise.all(
         snapshot.docs
@@ -32,7 +46,7 @@ export function PostListWidget() {
       );
       setPosts(posts);
     });
-  }, []);
+  }, [constraints]);
   return (
     <ScrollArea className="min-h-0">
       {posts?.map((post) => (

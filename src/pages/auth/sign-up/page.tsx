@@ -74,7 +74,7 @@ export function SignUpPage() {
                 <ErrorField errors={state?.password} />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor={displayNameId}>닉네임</Label>
+                <Label htmlFor={displayNameId}>별명</Label>
                 <Input id={displayNameId} name="displayName" required />
               </div>
               <ErrorField errors={state?.error} />

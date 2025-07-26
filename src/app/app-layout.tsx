@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/shared/auth/auth-provider";
-import { MainSidebar } from "@/shared/sidebar/ui/main-sidebar";
+import { AppSidebar } from "@/app/app-sidebar";
 import { Outlet } from "react-router";
 
 export function AppLayout() {
@@ -8,7 +8,7 @@ export function AppLayout() {
     <>
       <SidebarProvider>
         <AuthProvider>
-          <MainSidebar />
+          <AppSidebar />
           <Outlet />
         </AuthProvider>
       </SidebarProvider>

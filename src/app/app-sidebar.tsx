@@ -18,13 +18,16 @@ import { signOut } from "@/shared/auth/auth";
 import { useAuth } from "@/shared/auth/use-auth";
 import { LogoView } from "@/shared/logo/ui";
 import { UserAvatar } from "@/shared/user-avatar/ui/user-avatar";
-import { HomeIcon } from "lucide-react";
+import { HomeIcon, SettingsIcon } from "lucide-react";
 import { Link, NavLink } from "react-router";
 
-export function MainSidebar() {
+export function AppSidebar() {
   const auth = useAuth();
 
-  const menus = [{ label: "홈", to: "/", icon: HomeIcon }];
+  const menus = [
+    { label: "홈", to: "/", icon: HomeIcon },
+    { label: "설정", to: "/settings", icon: SettingsIcon },
+  ];
 
   return (
     <Sidebar>
@@ -55,7 +58,9 @@ export function MainSidebar() {
             <div className="font-bold">{auth?.displayName}</div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>계정</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to={`/users/${auth?.uid}`}>계정</Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Button

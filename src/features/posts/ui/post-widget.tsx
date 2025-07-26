@@ -13,27 +13,34 @@ import { formatRelativeTime } from "@/shared/time/format-relative-time";
 import { UserAvatar } from "@/shared/user-avatar/ui/user-avatar";
 import { MoreHorizontalIcon } from "lucide-react";
 import { useRef, useState } from "react";
+import { Link } from "react-router";
 import { PostEditor } from "./post-editor";
 
 export function PostWidget(props: PostSelectWithId) {
-  const auth = useAuth();
-  const isMyPost = auth?.uid === props.author.uid;
+  const auth = useAuth(true);
+  const isMyPost = auth.uid === props.author.uid;
   const [isEditingText, setIsEditingText] = useState(false);
   const editorRef = useRef<HTMLTextAreaElement>(null);
+  const profileUrl = `/users/${props.author.uid}`;
   return (
     <article
       key={props.id}
       className="grid grid-cols-[max-content_1fr] gap-2 p-2 not-last:border-b"
     >
-      <UserAvatar src={props.author.photoURL} />
+      <Link to={profileUrl}>
+        <UserAvatar src={props.author.photoURL} />
+      </Link>
       <div className="flex flex-col">
         <div className="flex flex-wrap gap-1 items-center">
-          <span className="font-bold">
+          <Link to={profileUrl} className="font-bold">
             {props.author.displayName ?? "삭제된 계정"}
-          </span>
-          <span className="text-muted-foreground text-xs">
+          </Link>
+          <time
+            className="text-muted-foreground text-xs"
+            dateTime={props.createdAt.toDate().toISOString()}
+          >
             {formatRelativeTime(props.createdAt.toDate())}
-          </span>
+          </time>
           <span className="ml-auto">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
